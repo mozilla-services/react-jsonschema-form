@@ -44,6 +44,7 @@ A [live playground](https://mozilla-services.github.io/react-jsonschema-form/) i
         - [orderable option](#orderable-option)
         - [addable option](#addable-option)
         - [removable option](#removable-option)
+        - [minRemovable option](#minremovable-option)
      - [Custom CSS class names](#custom-css-class-names)
      - [Custom labels for enum fields](#custom-labels-for-enum-fields)
         - [Alternative JSON-Schema compliant approach](#alternative-json-schema-compliant-approach)
@@ -563,6 +564,18 @@ A remove button is shown by default for an item if `items` contains a schema obj
 const uiSchema = {
   "ui:options":  {
     removable: false
+  }
+};
+```
+
+#### `minRemovable` option
+
+A remove button is shown by default even when the number of items is less than or equal to `minItems`. You can turn this off with the `minRemovable` option in `uiSchema`:
+
+```jsx
+const uiSchema = {
+  "ui:options":  {
+    minRemovable: false
   }
 };
 ```
