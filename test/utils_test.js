@@ -539,6 +539,331 @@ describe("utils", () => {
       expect(retrieveSchema(schema, definitions)).eql(address);
     });
 
+    it("should throw an Error when a JSON Pointer is not found", () => {
+      const schema = { $ref: "#/definitions/address404" };
+      const address = {
+        type: "object",
+        properties: {
+          street_address: { type: "string" },
+          city: { type: "string" },
+          state: { type: "string" },
+        },
+        required: ["street_address", "city", "state"],
+      };
+      const definitions = { address };
+      expect(() => retrieveSchema(schema, definitions)).to.throw(
+        `Could not find a definition for #/definitions/address404.`
+      );
+    });
+
+    it("should throw an Error if a JSON Pointer refers to itself", () => {
+      const schema = { $ref: "#/definitions/address" };
+
+      const address = {
+        $ref: "#/definitions/address",
+      };
+
+      const definitions = { address };
+      expect(() => retrieveSchema(schema, definitions)).to.throw(
+        `Circular or self reference detected when reading schema for #/definitions/address`
+      );
+    });
+
+    it("should throw an Error if two JSON Pointers refer to each another ", () => {
+      const schema = { $ref: "#/definitions/address1" };
+
+      const address1 = {
+        $ref: "#/definitions/address2",
+      };
+
+      const address2 = {
+        $ref: "#/definitions/address1",
+      };
+
+      const definitions = { address1, address2 };
+      expect(() => retrieveSchema(schema, definitions)).to.throw(
+        `Circular or self reference detected when reading schema for #/definitions/address`
+      );
+    });
+
+    it("should throw an Error when a JSON Pointer references a JSON Pointer that does not exist", () => {
+      const schema = { $ref: "#/definitions/address" };
+      const address = {
+        $ref: "#/definitions/address2",
+      };
+
+      const definitions = { address };
+      expect(() => retrieveSchema(schema, definitions)).to.throw(
+        `Could not find a definition for #/definitions/address2`
+      );
+    });
+
+    it("should throw an Error when a JSON pointer references a $id that does not exit", () => {
+      const schema = { $ref: "#/definitions/address" };
+      const address = {
+        $ref: "#address2",
+      };
+
+      const definitions = { address };
+      expect(() => retrieveSchema(schema, definitions)).to.throw(
+        `Could not find a definition for #address2`
+      );
+    });
+
+    it("should 'resolve' an $id reference resulting from dereferncing a JSON Pointer", () => {
+      const schema = { $ref: "#/definitions/address" };
+      const addressSpecial = {
+        $id: "#address_special",
+        type: "object",
+        properties: {
+          containerId: {
+            type: "string",
+          },
+          pierNo: {
+            type: "string",
+          },
+          wharf: {
+            type: "string",
+          },
+          port: {
+            type: "string",
+          },
+        },
+      };
+      const address = {
+        $ref: "#address_special",
+      };
+      const definitions = {
+        address,
+        addressSpecial,
+      };
+      expect(retrieveSchema(schema, definitions)).eql(addressSpecial);
+    });
+
+    it("should throw an Error if a JSON Pointer refers to itself using a $id", () => {
+      const schema = { $ref: "#/definitions/address" };
+
+      const address = {
+        $id: "#address",
+        $ref: "#address",
+      };
+
+      const definitions = { address };
+      // NOTE: here the error is thrown when the function runs for the third time
+      // it runs the first time with the JSON Pointer and the second time with the $id
+      // the third time it runs, it finds the id and throws the error using the `$id`
+      expect(() => retrieveSchema(schema, definitions)).to.throw(
+        `Circular or self reference detected when reading schema for #address`
+      );
+    });
+
+    it("should 'resolve' a schema which references $ids within definitions", () => {
+      const schema = { $ref: "#address" };
+      const address = {
+        $id: "#address",
+        type: "object",
+        properties: {
+          street_address: { type: "string" },
+          city: { type: "string" },
+          state: { type: "string" },
+          postcode: { type: "number" },
+        },
+        required: ["street_address", "city", "state", "postcode"],
+      };
+      const definitions = {
+        address,
+      };
+      expect(retrieveSchema(schema, definitions)).eql(address);
+    });
+
+    it("should throw an Error when a $id is not found", () => {
+      const schema = { $ref: "#address404" };
+      const address = {
+        $id: "#address",
+        type: "object",
+        properties: {
+          street_address: { type: "string" },
+          city: { type: "string" },
+          state: { type: "string" },
+          postcode: { type: "number" },
+        },
+        required: ["street_address", "city", "state", "postcode"],
+      };
+      const definitions = {
+        address,
+      };
+      expect(() => retrieveSchema(schema, definitions)).to.throw(
+        `Could not find a definition for #address404.`
+      );
+    });
+
+    it("should 'resolve' a schema where a $id has a reference to a JSON Pointer", () => {
+      const schema = { $ref: "#address" };
+      const addressSpecial = {
+        type: "object",
+        properties: {
+          containerId: {
+            type: "string",
+          },
+          pierNo: {
+            type: "string",
+          },
+          wharf: {
+            type: "string",
+          },
+          port: {
+            type: "string",
+          },
+        },
+      };
+      const address = {
+        $id: "#address",
+        $ref: "#/definitions/addressSpecial",
+      };
+      const definitions = {
+        address,
+        addressSpecial,
+      };
+      expect(retrieveSchema(schema, definitions)).eql(addressSpecial);
+    });
+
+    it("should 'resolve' a schema which has references that are normalized", () => {
+      const schema = { $ref: "#address" };
+      const address = {
+        $id: "#address",
+        type: "object",
+        properties: {
+          street_address: { $ref: "#street_address" },
+          city: { $ref: "#city" },
+          state: { $ref: "#state" },
+          postcode: { $ref: "#postcode" },
+        },
+        required: ["street_address", "city", "state", "postcode"],
+      };
+      const definitions = {
+        street_address: { $id: "#street_address", type: "string" },
+        city: { $id: "#city", type: "string" },
+        state: { $id: "#state", type: "string" },
+        postcode: { $id: "#postcode", type: "number" },
+        address,
+      };
+
+      expect(retrieveSchema(schema, definitions)).eql(address);
+    });
+
+    it("should throw an Error  when a $id refers to a JSON Pointer which does not exist", () => {
+      const schema = { $ref: "#address" };
+      const address = {
+        $id: "#address",
+        $ref: "#/definitions/address2",
+        type: "object",
+        properties: {
+          street_address: { type: "string" },
+          city: { type: "string" },
+          state: { type: "string" },
+          postcode: { type: "number" },
+        },
+        required: ["street_address", "city", "state", "postcode"],
+      };
+      const definitions = {
+        address,
+      };
+      expect(() => retrieveSchema(schema, definitions)).to.throw(
+        `Could not find a definition for #/definitions/address2`
+      );
+    });
+
+    it("should throw an Error when a $id refers to a $id which does not exist", () => {
+      const schema = { $ref: "#address" };
+      const address = {
+        $id: "#address",
+        $ref: "#address2",
+        type: "object",
+        properties: {
+          street_address: { type: "string" },
+          city: { type: "string" },
+          state: { type: "string" },
+          postcode: { type: "number" },
+        },
+        required: ["street_address", "city", "state", "postcode"],
+      };
+      const definitions = {
+        address,
+      };
+      expect(() => retrieveSchema(schema, definitions)).to.throw(
+        `Could not find a definition for #address2`
+      );
+    });
+
+    it("should throw an error if an id is self referencing", () => {
+      const schema = { $ref: "#object" };
+      const definitions = {
+        object: {
+          type: "string",
+          $id: "#object",
+          $ref: "#object",
+        },
+      };
+      expect(() => retrieveSchema(schema, definitions)).to.throw(
+        `Circular or self reference detected when reading schema for #object`
+      );
+    });
+
+    it("should throw an error if two ids have circular references", () => {
+      const schema = { $ref: "#object1" };
+
+      const definitions = {
+        object1: {
+          $id: "#object1",
+          $ref: "#object2",
+        },
+
+        object2: {
+          $id: "#object2",
+          $ref: "#object1",
+        },
+      };
+      expect(() => retrieveSchema(schema, definitions)).to.throw(
+        `Circular or self reference detected when reading schema for #object1`
+      );
+    });
+
+    it("should throw an Error when a $id refers to itself using a JSON Pointer", () => {
+      const schema = { $ref: "#address" };
+      const address = {
+        $id: "#address",
+        $ref: "#/definitions/address",
+      };
+      const definitions = {
+        address,
+      };
+      expect(() => retrieveSchema(schema, definitions)).to.throw(
+        `Circular or self reference detected when reading schema for #/definitions/address`
+      );
+    });
+
+    it("should throw an Error when a $id and a JSON Pointer refer to each another", () => {
+      const schema = { $ref: "#a" };
+      const schema2 = { $ref: "#/definitions/b" };
+      const a = {
+        $id: "#a",
+        $ref: "#/definitions/b",
+      };
+      const b = {
+        $ref: "#a",
+      };
+      const definitions = { a, b };
+      // NOTE: error is thrown in the third recursive iteration of the function
+      // #a -> #/definitions/b -> #a
+      expect(() => retrieveSchema(schema, definitions)).to.throw(
+        `Circular or self reference detected when reading schema for #a`
+      );
+
+      expect(() => retrieveSchema(schema2, definitions)).to.throw(
+        `Circular or self reference detected when reading schema for #/definitions/b`
+      );
+    });
+
     it("should 'resolve' escaped JSON Pointers", () => {
       const schema = { $ref: "#/definitions/a~0complex~1name" };
       const address = { type: "string" };
