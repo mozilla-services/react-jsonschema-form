@@ -367,6 +367,7 @@ Please note that, even though they are standardized, `datetime-local` and `date`
 
 - `alt-datetime`: Six `select` elements are used to select the year, the month, the day, the hour, the minute and the second;
 - `alt-date`: Three `select` elements are used to select the year, month and the day.
+- `alt-time`: Two `select` elements are used to select the hour and minutes.
 
 > **Firefox 57 - 66**: Firefox partially supporting `date` and `time` input types, but not `datetime-local`, `month` or `week`
 
