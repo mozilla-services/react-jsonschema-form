@@ -870,3 +870,34 @@ export function rangeSpec(schema) {
   }
   return spec;
 }
+
+function trimObject(object) {
+  return Object.entries(object).reduce((acc, [key, value]) => {
+    const trimmed = trimEmptyValues(value);
+    if (trimmed || trimmed === false) {
+      if (!acc) {
+        acc = {};
+      }
+      acc[key] = trimmed;
+    }
+    return acc;
+  }, undefined);
+}
+
+function trimArray(array) {
+  return array.reduce((acc, value) => {
+    const trimmed = trimEmptyValues(value);
+    if (trimmed || trimmed === false) {
+      acc.push(trimmed);
+    }
+    return acc;
+  }, []);
+}
+
+export function trimEmptyValues(value) {
+  return Array.isArray(value)
+    ? trimArray(value)
+    : typeof value === "object"
+    ? trimObject(value)
+    : value;
+}
