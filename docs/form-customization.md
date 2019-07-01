@@ -56,7 +56,7 @@ render((
 
 ### Alternative widgets
 
-The uiSchema `ui:widget` property tells the form which UI widget should be used to render a field. 
+The uiSchema `ui:widget` property tells the form which UI widget should be used to render a field.
 
 Example:
 
@@ -183,6 +183,10 @@ Notes:
 
  - Hiding widgets is only supported for `boolean`, `string`, `number` and `integer` schema types;
  - A hidden widget takes its value from the `formData` prop.
+
+##### Filtering forms dynamically with hidden widgets
+
+Filtering large forms can be accomplished by taking a search string and dynamically constructing a `uiSchema` object based on it. See [this Code Sandbox](https://codesandbox.io/s/examplereactjsonschemaformfilter-wikn6) for an example implementation.
 
 #### File widgets
 
@@ -713,7 +717,7 @@ The `Form` component supports the following html attributes:
 
 ### Disabling a form
 
-It's possible to disable the whole form by setting the `disabled` prop. The `disabled` prop is then forwarded down to each field of the form. 
+It's possible to disable the whole form by setting the `disabled` prop. The `disabled` prop is then forwarded down to each field of the form.
 
 ```jsx
 <Form
@@ -721,4 +725,4 @@ It's possible to disable the whole form by setting the `disabled` prop. The `dis
   schema={} />
 ```
 
-If you just want to disable some of the fields, see the [`ui:disabled`](#disabled-fields) parameter in the `uiSchema` directive. 
+If you just want to disable some of the fields, see the [`ui:disabled`](#disabled-fields) parameter in the `uiSchema` directive.
