@@ -1002,11 +1002,14 @@ describe("Form", () => {
 
       const pathSchema = {
         $name: "",
+        $hasChildren: true,
         level1: {
           $name: "level1",
+          $hasChildren: true,
           level2: { $name: "level1.level2" },
           anotherThing: {
             $name: "level1.anotherThing",
+            $hasChildren: true,
             anotherThingNested: {
               $name: "level1.anotherThing.anotherThingNested",
             },
@@ -1058,9 +1061,11 @@ describe("Form", () => {
 
       const pathSchema = {
         $name: "",
+        $hasChildren: true,
         address_list: {
           "0": {
             $name: "address_list.0",
+            $hasChildren: true,
             city: {
               $name: "address_list.0.city",
             },
@@ -1073,6 +1078,7 @@ describe("Form", () => {
           },
           "1": {
             $name: "address_list.1",
+            $hasChildren: true,
             city: {
               $name: "address_list.1.city",
             },
