@@ -51,6 +51,7 @@ const widgetMap = {
     hidden: "HiddenWidget",
   },
   array: {
+    multiselect: "MultiSelectWidget",
     select: "SelectWidget",
     checkboxes: "CheckboxesWidget",
     files: "FileWidget",
