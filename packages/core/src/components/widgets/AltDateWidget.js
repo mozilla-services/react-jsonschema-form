@@ -18,6 +18,7 @@ function readyForChange(state) {
 function DateElement(props) {
   const {
     type,
+    placeholder,
     range,
     value,
     select,
@@ -36,7 +37,7 @@ function DateElement(props) {
       id={id}
       className="form-control"
       options={{ enumOptions: rangeOptions(range[0], range[1]) }}
-      placeholder={type}
+      placeholder={placeholder}
       value={value}
       disabled={disabled}
       readonly={readonly}
@@ -47,6 +48,20 @@ function DateElement(props) {
   );
 }
 
+const defaultLabels = {
+  now: "Now",
+  clear: "Clear",
+};
+
+const defaultPlaceholders = {
+  year: "year",
+  month: "month",
+  day: "day",
+  hour: "hour",
+  minute: "minute",
+  second: "second",
+};
+
 class AltDateWidget extends Component {
   static defaultProps = {
     time: false,
@@ -55,6 +70,8 @@ class AltDateWidget extends Component {
     autofocus: false,
     options: {
       yearsRange: [1900, new Date().getFullYear() + 2],
+      labels: defaultLabels,
+      placeholders: defaultPlaceholders,
     },
   };
 
@@ -103,22 +120,51 @@ class AltDateWidget extends Component {
   };
 
   get dateElementProps() {
-    const { time, options } = this.props;
+    const {
+      time,
+      options: { placeholders, ...options },
+    } = this.props;
     const { year, month, day, hour, minute, second } = this.state;
     const data = [
       {
         type: "year",
+        placeholder: placeholders.year || defaultPlaceholders.year,
         range: options.yearsRange,
         value: year,
       },
-      { type: "month", range: [1, 12], value: month },
-      { type: "day", range: [1, 31], value: day },
+      {
+        type: "month",
+        placeholder: placeholders.month || defaultPlaceholders.month,
+        range: [1, 12],
+        value: month,
+      },
+      {
+        type: "day",
+        placeholder: placeholders.day || defaultPlaceholders.day,
+        range: [1, 31],
+        value: day,
+      },
     ];
     if (time) {
       data.push(
-        { type: "hour", range: [0, 23], value: hour },
-        { type: "minute", range: [0, 59], value: minute },
-        { type: "second", range: [0, 59], value: second }
+        {
+          type: "hour",
+          placeholder: placeholders.hour || defaultPlaceholders.hour,
+          range: [0, 23],
+          value: hour,
+        },
+        {
+          type: "minute",
+          placeholder: placeholders.minute || defaultPlaceholders.minute,
+          range: [0, 59],
+          value: minute,
+        },
+        {
+          type: "second",
+          placeholder: placeholders.second || defaultPlaceholders.second,
+          range: [0, 59],
+          value: second,
+        }
       );
     }
     return data;
@@ -132,7 +178,7 @@ class AltDateWidget extends Component {
       autofocus,
       registry,
       onBlur,
-      options,
+      options: { labels, ...options },
     } = this.props;
     return (
       <ul className="list-inline">
@@ -155,7 +201,7 @@ class AltDateWidget extends Component {
           : true) && (
           <li>
             <a href="#" className="btn btn-info btn-now" onClick={this.setNow}>
-              Now
+              {labels.now || defaultLabels.now}
             </a>
           </li>
         )}
@@ -167,7 +213,7 @@ class AltDateWidget extends Component {
               href="#"
               className="btn btn-warning btn-clear"
               onClick={this.clear}>
-              Clear
+              {labels.clear || defaultLabels.clear}
             </a>
           </li>
         )}
