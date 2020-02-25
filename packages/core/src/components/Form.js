@@ -15,7 +15,10 @@ import {
   toPathSchema,
   isObject,
 } from "../utils";
-import validateFormData, { toErrorList } from "../validate";
+import validateFormData, {
+  toErrorList,
+  sortErrorsByUiSchema,
+} from "../validate";
 import { mergeObjects } from "../utils";
 
 export default class Form extends Component {
@@ -75,6 +78,7 @@ export default class Form extends Component {
       errorSchema = mergeObjects(errorSchema, props.extraErrors);
       errors = toErrorList(errorSchema);
     }
+    const sortedErrors = sortErrorsByUiSchema(errors, uiSchema);
     const idSchema = toIdSchema(
       retrievedSchema,
       uiSchema["ui:rootFieldId"],
@@ -88,9 +92,9 @@ export default class Form extends Component {
       idSchema,
       formData,
       edit,
-      errors,
       errorSchema,
       additionalMetaSchemas,
+      errors: sortedErrors,
     };
   }
 
@@ -209,7 +213,8 @@ export default class Form extends Component {
         errorSchema = mergeObjects(errorSchema, this.props.extraErrors);
         errors = toErrorList(errorSchema);
       }
-      state = { formData: newFormData, errors, errorSchema };
+      const sortedErrors = sortErrorsByUiSchema(errors, this.state.uiSchema);
+      state = { formData: newFormData, errors: sortedErrors, errorSchema };
     } else if (!this.props.noValidate && newErrorSchema) {
       const errorSchema = this.props.extraErrors
         ? mergeObjects(newErrorSchema, this.props.extraErrors)
@@ -217,7 +222,10 @@ export default class Form extends Component {
       state = {
         formData: newFormData,
         errorSchema: errorSchema,
-        errors: toErrorList(errorSchema),
+        errors: sortErrorsByUiSchema(
+          toErrorList(errorSchema),
+          this.state.uiSchema
+        ),
       };
     }
     this.setState(
@@ -272,11 +280,12 @@ export default class Form extends Component {
           errorSchema = mergeObjects(errorSchema, this.props.extraErrors);
           errors = toErrorList(errorSchema);
         }
-        this.setState({ errors, errorSchema }, () => {
+        const sortedErrors = sortErrorsByUiSchema(errors, this.state.uiSchema);
+        this.setState({ errors: sortedErrors, errorSchema }, () => {
           if (this.props.onError) {
-            this.props.onError(errors);
+            this.props.onError(sortedErrors);
           } else {
-            console.error("Form validation failed", errors);
+            console.error("Form validation failed", sortedErrors);
           }
         });
         return;
