@@ -37,6 +37,13 @@ const ExposedArrayKeyTemplate = function(props) {
                 Up
               </button>
             )}
+            {element.hasCopy && (
+              <button
+                className="array-item-copy"
+                onClick={element.onCopyIndexClick(element.index)}>
+                Remove
+              </button>
+            )}
             {element.hasRemove && (
               <button
                 className="array-item-remove"
@@ -1015,6 +1022,60 @@ describe("ArrayField", () => {
       const inputs = form.node.querySelectorAll("input[type=text]");
       expect(inputs.length).eql(0);
     });
+
+    it("should show copy buttons", () => {
+      const { node } = createFormComponent({
+        schema,
+        formData: ["foo", "bar"],
+      });
+      const copyBtns = node.querySelector(".array-item-copy");
+
+      expect(copyBtns).not.eql(null);
+    });
+
+    it("should not show copy buttons if copyable is false", () => {
+      const { node } = createFormComponent({
+        schema,
+        formData: ["foo", "bar"],
+        uiSchema: { "ui:options": { copyable: false } },
+      });
+      const copyBtns = node.querySelector(".array-item-copy");
+
+      expect(copyBtns).to.be.null;
+    });
+
+    it("should assign new keys/ids when clicking the copy button", () => {
+      const { node } = createFormComponent({
+        schema,
+        formData: ["foo", "bar", "baz"],
+        ArrayFieldTemplate: ExposedArrayKeyTemplate,
+      });
+
+      const copyBtns = node.querySelectorAll(".array-item-copy");
+
+      Simulate.click(copyBtns[2]);
+
+      expect(node.querySelector(".array-item").hasAttribute(ArrayKeyDataAttr))
+        .to.be.true;
+    });
+
+    it("should have same value when clicking the copy button on bar value", () => {
+      const { node } = createFormComponent({
+        schema,
+        formData: ["foo", "bar", "baz"],
+      });
+
+      const copyBtns = node.querySelectorAll(".array-item-copy");
+
+      Simulate.click(copyBtns[1]);
+
+      const inputs = node.querySelectorAll(".field-string input[type=text]");
+      expect(inputs).to.have.length.of(4);
+      expect(inputs[0].value).eql("foo");
+      expect(inputs[1].value).eql("bar");
+      expect(inputs[2].value).eql("baz");
+      expect(inputs[3].value).eql("bar");
+    });
   });
 
   describe("Multiple choices list", () => {
@@ -1248,7 +1309,6 @@ describe("ArrayField", () => {
       });
     });
   });
-
   describe("Multiple files field", () => {
     const schema = {
       type: "array",

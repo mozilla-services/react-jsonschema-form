@@ -137,6 +137,7 @@ The following props are part of each element in `items`:
 - `hasMoveDown`: A boolean value stating whether the array item can be moved down.
 - `hasMoveUp`: A boolean value stating whether the array item can be moved up.
 - `hasRemove`: A boolean value stating whether the array item can be removed.
+- `hasCopy`: A boolean value stating whether the array item can be copied.
 - `hasToolbar`: A boolean value stating whether the array item has a toolbar.
 - `index`: A number stating the index the array item occurs in `items`.
 - `key`: A stable, unique key for the array item.
@@ -531,13 +532,14 @@ You can provide a `formContext` object to the Form, which is passed down to all 
 
 ### Custom array field buttons
 
-The `ArrayField` component provides a UI to add, remove and reorder array items, and these buttons use [Bootstrap glyphicons](http://getbootstrap.com/components/#glyphicons). If you don't use glyphicons but still want to provide your own icons or texts for these buttons, you can easily do so using CSS:
+The `ArrayField` component provides a UI to add, copy, remove and reorder array items, and these buttons use [Bootstrap glyphicons](http://getbootstrap.com/components/#glyphicons). If you don't use glyphicons but still want to provide your own icons or texts for these buttons, you can easily do so using CSS:
 
 ```css
 i.glyphicon { display: none; }
 .btn-add::after { content: 'Add'; }
 .array-item-move-up::after { content: 'Move Up'; }
 .array-item-move-down::after { content: 'Move Down'; }
+.array-item-copy::after { content: 'Copy'; }
 .array-item-remove::after { content: 'Remove'; }
 ```
 
