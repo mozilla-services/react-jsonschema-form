@@ -226,8 +226,10 @@ function WrapIfAdditional(props) {
 }
 
 function SchemaFieldRender(props) {
+  /* eslint-disable no-unused-vars */
+
   const {
-    uiSchema,
+    uiSchema: _,
     formData,
     errorSchema,
     idPrefix,
@@ -238,11 +240,25 @@ function SchemaFieldRender(props) {
     registry = getDefaultRegistry(),
     wasPropertyKeyModified = false,
   } = props;
+
+  /* eslint-enable no-unused-vars */
   const { rootSchema, fields, formContext } = registry;
+
+  var schema = retrieveSchema(props.schema, rootSchema, formData);
+  var uiSchema = { ...props.uiSchema };
+  let ui = schema.ui;
+
+  // Hack UI Schema in from schema
+  if (ui) {
+    for (let key in ui) {
+      uiSchema["ui:" + key] = ui[key];
+    }
+  }
+
   const FieldTemplate =
     uiSchema["ui:FieldTemplate"] || registry.FieldTemplate || DefaultTemplate;
   let idSchema = props.idSchema;
-  const schema = retrieveSchema(props.schema, rootSchema, formData);
+
   idSchema = mergeObjects(
     toIdSchema(schema, null, rootSchema, formData, idPrefix),
     idSchema
@@ -405,7 +421,6 @@ function SchemaFieldRender(props) {
     </FieldTemplate>
   );
 }
-
 class SchemaField extends React.Component {
   shouldComponentUpdate(nextProps, nextState) {
     return !deepEquals(this.props, nextProps);
