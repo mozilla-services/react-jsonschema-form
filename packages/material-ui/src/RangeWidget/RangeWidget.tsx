@@ -26,6 +26,7 @@ const RangeWidget = ({
   label,
   id,
 }: WidgetProps) => {
+  const uiProps = options["props"];
   let sliderProps = { value, label, id, ...rangeSpec(schema) };
 
   const _onChange = ({}, value: any) =>
@@ -43,13 +44,14 @@ const RangeWidget = ({
         //error={!!rawErrors}
         required={required}
       >
-        <FormLabel id={id}>{label}</FormLabel>
+        <FormLabel id={id}>{label || schema.title}</FormLabel>
         <Slider
           {...sliderProps}
           disabled={disabled || readonly}
           onChange={_onChange}
           onBlur={_onBlur}
           onFocus={_onFocus}
+          {...uiProps}
         />
       </FormControl>
     </Grid>
