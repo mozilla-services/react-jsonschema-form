@@ -14,7 +14,8 @@
     "precommit": "lint-staged",
     "publish-to-gh-pages": "npm run build && gh-pages --dist build/",
     "publish-to-npm": "npm run build && npm publish",
-    "start": "webpack-dev-server --open --config webpack.config.dev.js"
+    "start": "webpack-dev-server --open --config webpack.config.dev.js",
+    "test": "jest"
   },
   "lint-staged": {
     "{playground,src,test}/**/*.js": [
@@ -52,6 +53,7 @@
     "less-loader": "^5.0.0",
     "lodash": "^4.17.15",
     "prop-types": "^15.7.2",
+    "puppeteer-core": "^4.0.1",
     "react-app-polyfill": "^1.0.4",
     "react-bootstrap": "^0.33.1",
     "react-frame-component": "^4.1.1",
@@ -72,6 +74,7 @@
     "@material-ui/icons": "^4.5.1",
     "atob": "^2.0.3",
     "babel-eslint": "^10.0.1",
+    "babel-jest": "^26.0.1",
     "babel-loader": "^8.0.6",
     "chai": "^3.3.0",
     "codemirror": "^5.30.0",
@@ -91,6 +94,10 @@
     "html": "^1.0.0",
     "html-webpack-plugin": "^3.2.0",
     "husky": "^0.13.2",
+    "jest": "^25.5.4",
+    "jest-image-snapshot": "^4.0.0",
+    "jest-puppeteer": "^4.4.0",
+    "jest-puppeteer-docker": "^1.4.0",
     "jsdom": "^8.3.0",
     "json-loader": "^0.5.7",
     "lint-staged": "^9.4.2",
@@ -111,6 +118,7 @@
     "rimraf": "^2.5.4",
     "sass": "^1.23.7",
     "sass-loader": "^7.3.1",
+    "serve": "^11.3.0",
     "sinon": "^7.5.0",
     "style-loader": "^1.2.1",
     "webpack": "^4.20.2",
