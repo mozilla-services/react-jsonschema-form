@@ -56,7 +56,8 @@ function DefaultArrayItem(props) {
             style={{
               display: "flex",
               justifyContent: "space-around",
-            }}>
+            }}
+          >
             {(props.hasMoveUp || props.hasMoveDown) && (
               <IconButton
                 icon="arrow-up"
@@ -116,14 +117,16 @@ function DefaultFixedArrayFieldTemplate(props) {
       {(props.uiSchema["ui:description"] || props.schema.description) && (
         <div
           className="field-description"
-          key={`field-description-${props.idSchema.$id}`}>
+          key={`field-description-${props.idSchema.$id}`}
+        >
           {props.uiSchema["ui:description"] || props.schema.description}
         </div>
       )}
 
       <div
         className="row array-item-list"
-        key={`array-item-list-${props.idSchema.$id}`}>
+        key={`array-item-list-${props.idSchema.$id}`}
+      >
         {props.items && props.items.map(DefaultArrayItem)}
       </div>
 
@@ -162,8 +165,9 @@ function DefaultNormalArrayFieldTemplate(props) {
 
       <div
         className="row array-item-list"
-        key={`array-item-list-${props.idSchema.$id}`}>
-        {props.items && props.items.map(p => DefaultArrayItem(p))}
+        key={`array-item-list-${props.idSchema.$id}`}
+      >
+        {props.items && props.items.map((p) => DefaultArrayItem(p))}
       </div>
 
       {props.canAdd && (
@@ -184,7 +188,7 @@ function generateRowId() {
 function generateKeyedFormData(formData) {
   return !Array.isArray(formData)
     ? []
-    : formData.map(item => {
+    : formData.map((item) => {
         return {
           key: generateRowId(),
           item,
@@ -193,7 +197,7 @@ function generateKeyedFormData(formData) {
 }
 
 function keyedToPlainFormData(keyedFormData) {
-  return keyedFormData.map(keyedItem => keyedItem.item);
+  return keyedFormData.map((keyedItem) => keyedItem.item);
 }
 
 class ArrayField extends Component {
@@ -280,7 +284,7 @@ class ArrayField extends Component {
     return getDefaultFormState(itemSchema, undefined, rootSchema);
   };
 
-  onAddClick = event => {
+  onAddClick = (event) => {
     if (event) {
       event.preventDefault();
     }
@@ -300,8 +304,8 @@ class ArrayField extends Component {
     );
   };
 
-  onAddIndexClick = index => {
-    return event => {
+  onAddIndexClick = (index) => {
+    return (event) => {
       if (event) {
         event.preventDefault();
       }
@@ -323,8 +327,8 @@ class ArrayField extends Component {
     };
   };
 
-  onDropIndexClick = index => {
-    return event => {
+  onDropIndexClick = (index) => {
+    return (event) => {
       if (event) {
         event.preventDefault();
       }
@@ -356,7 +360,7 @@ class ArrayField extends Component {
   };
 
   onReorderClick = (index, newIndex) => {
-    return event => {
+    return (event) => {
       if (event) {
         event.preventDefault();
         event.target.blur();
@@ -398,7 +402,7 @@ class ArrayField extends Component {
     };
   };
 
-  onChangeForIndex = index => {
+  onChangeForIndex = (index) => {
     return (value, errorSchema) => {
       const { formData, onChange } = this.props;
       const newFormData = formData.map((item, i) => {
@@ -418,7 +422,7 @@ class ArrayField extends Component {
     };
   };
 
-  onSelectChange = value => {
+  onSelectChange = (value) => {
     this.props.onChange(value);
   };
 
@@ -752,7 +756,7 @@ class ArrayField extends Component {
       moveDown: orderable && canMoveDown,
       remove: removable && canRemove,
     };
-    has.toolbar = Object.keys(has).some(key => has[key]);
+    has.toolbar = Object.keys(has).some((key) => has[key]);
 
     return {
       children: (

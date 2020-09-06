@@ -93,8 +93,8 @@ function shouldRender(comp, nextProps, nextState) {
   return !deepEquals(props, nextProps) || !deepEquals(state, nextState);
 }
 
-const log = type => console.log.bind(console, type);
-const toJson = val => JSON.stringify(val, null, 2);
+const log = (type) => console.log.bind(console, type);
+const toJson = (val) => JSON.stringify(val, null, 2);
 const liveSettingsSchema = {
   type: "object",
   properties: {
@@ -119,7 +119,7 @@ class GeoPosition extends Component {
   }
 
   onChange(name) {
-    return event => {
+    return (event) => {
       this.setState({ [name]: parseFloat(event.target.value) });
       setImmediate(() => this.props.onChange(this.state));
     };
@@ -182,7 +182,7 @@ class Editor extends Component {
     return false;
   }
 
-  onCodeChange = code => {
+  onCodeChange = (code) => {
     try {
       const parsedCode = JSON.parse(code);
       this.setState({ valid: true, code }, () =>
@@ -226,8 +226,8 @@ class Selector extends Component {
     return shouldRender(this, nextProps, nextState);
   }
 
-  onLabelClick = label => {
-    return event => {
+  onLabelClick = (label) => {
+    return (event) => {
       event.preventDefault();
       this.setState({ current: label });
       setImmediate(() => this.props.onSelected(samples[label]));
@@ -242,7 +242,8 @@ class Selector extends Component {
             <li
               key={i}
               role="presentation"
-              className={this.state.current === label ? "active" : ""}>
+              className={this.state.current === label ? "active" : ""}
+            >
               <a href="#" onClick={this.onLabelClick(label)}>
                 {label}
               </a>
@@ -271,7 +272,8 @@ function ThemeSelector({ theme, themes, select }) {
       formData={theme}
       onChange={({ formData }) =>
         formData && select(formData, themes[formData])
-      }>
+      }
+    >
       <div />
     </Form>
   );
@@ -294,14 +296,15 @@ function SubthemeSelector({ subtheme, subthemes, select }) {
       formData={subtheme}
       onChange={({ formData }) =>
         formData && select(formData, subthemes[formData])
-      }>
+      }
+    >
       <div />
     </Form>
   );
 }
 
 class CopyLink extends Component {
-  onCopyClick = event => {
+  onCopyClick = (event) => {
     this.input.select();
     document.execCommand("copy");
   };
@@ -319,7 +322,7 @@ class CopyLink extends Component {
       <div className="input-group">
         <input
           type="text"
-          ref={input => (this.input = input)}
+          ref={(input) => (this.input = input)}
           className="form-control"
           defaultValue={shareURL}
         />
@@ -327,7 +330,8 @@ class CopyLink extends Component {
           <button
             className="btn btn-default"
             type="button"
-            onClick={this.onCopyClick}>
+            onClick={this.onCopyClick}
+          >
             <i className="glyphicon glyphicon-copy" />
           </button>
         </span>
@@ -385,7 +389,7 @@ class Playground extends Component {
     return shouldRender(this, nextProps, nextState);
   }
 
-  load = data => {
+  load = (data) => {
     // Reset the ArrayFieldTemplate whenever you load new data
     const { ArrayFieldTemplate, ObjectFieldTemplate, extraErrors } = data;
     // uiSchema is missing on some examples. Provide a default to
@@ -409,13 +413,13 @@ class Playground extends Component {
     );
   };
 
-  onSchemaEdited = schema => this.setState({ schema, shareURL: null });
+  onSchemaEdited = (schema) => this.setState({ schema, shareURL: null });
 
-  onUISchemaEdited = uiSchema => this.setState({ uiSchema, shareURL: null });
+  onUISchemaEdited = (uiSchema) => this.setState({ uiSchema, shareURL: null });
 
-  onFormDataEdited = formData => this.setState({ formData, shareURL: null });
+  onFormDataEdited = (formData) => this.setState({ formData, shareURL: null });
 
-  onExtraErrorsEdited = extraErrors =>
+  onExtraErrorsEdited = (extraErrors) =>
     this.setState({ extraErrors, shareURL: null });
 
   onThemeSelected = (
@@ -514,7 +518,8 @@ class Playground extends Component {
                 idPrefix="rjsf_options"
                 schema={liveSettingsSchema}
                 formData={liveSettings}
-                onChange={this.setLiveSettings}>
+                onChange={this.setLiveSettings}
+              >
                 <div />
               </Form>
             </div>
@@ -594,7 +599,8 @@ class Playground extends Component {
                 height: 1000,
                 border: 0,
               }}
-              theme={theme}>
+              theme={theme}
+            >
               <FormComponent
                 {...templateProps}
                 liveValidate={liveSettings.validate}

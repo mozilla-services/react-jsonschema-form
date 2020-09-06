@@ -2,7 +2,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Button, Grid, Segment } from "semantic-ui-react";
-import { utils } from '@rjsf/core';
+import { utils } from "@rjsf/core";
 import AddButton from "../AddButton";
 import { cleanClassNames, getSemanticProps, MaybeWrap } from "../util";
 
@@ -26,7 +26,7 @@ function ArrayFieldDescription({ DescriptionField, idSchema, description }) {
   return <DescriptionField id={id} description={description} />;
 }
 
-const gridStyle = vertical => ({
+const gridStyle = (vertical) => ({
   display: "grid",
   gridTemplateColumns: `1fr ${vertical ? 65 : 110}px`,
 });
@@ -48,7 +48,8 @@ function DefaultArrayItem(props) {
             !isInitialArrayItem(props)
               ? { ...gridStyle(!props.horizontalButtons), alignItems: "center" }
               : gridStyle(!props.horizontalButtons)
-          }>
+          }
+        >
           <Grid.Column width={16} verticalAlign="middle">
             {props.children}
           </Grid.Column>
@@ -141,14 +142,15 @@ function DefaultFixedArrayFieldTemplate({
       {fieldDescription && (
         <div
           className="field-description"
-          key={`field-description-${idSchema.$id}`}>
+          key={`field-description-${idSchema.$id}`}
+        >
           {fieldDescription}
         </div>
       )}
 
       <div key={`array-item-list-${idSchema.$id}`}>
         <div className="row array-item-list">
-          {items && items.map(p => DefaultArrayItem({ ...p, ...itemProps }))}
+          {items && items.map((p) => DefaultArrayItem({ ...p, ...itemProps }))}
         </div>
 
         {canAdd && (
@@ -157,7 +159,8 @@ function DefaultFixedArrayFieldTemplate({
               marginTop: "1rem",
               position: "relative",
               textAlign: "right",
-            }}>
+            }}
+          >
             <AddButton onClick={onAddClick} disabled={disabled || readOnly} />
           </div>
         )}
@@ -191,7 +194,8 @@ function DefaultNormalArrayFieldTemplate({
         className,
         classNames,
         "sortable-form-fields",
-      ])}>
+      ])}
+    >
       <ArrayFieldTitle
         key={`array-field-title-${idSchema.$id}`}
         TitleField={TitleField}
@@ -212,7 +216,7 @@ function DefaultNormalArrayFieldTemplate({
 
       <div key={`array-item-list-${idSchema.$id}`}>
         <div className="row array-item-list">
-          {items && items.map(p => DefaultArrayItem({ ...p, ...itemProps }))}
+          {items && items.map((p) => DefaultArrayItem({ ...p, ...itemProps }))}
         </div>
 
         {canAdd && (
@@ -221,7 +225,8 @@ function DefaultNormalArrayFieldTemplate({
               marginTop: "1rem",
               position: "relative",
               textAlign: "right",
-            }}>
+            }}
+          >
             <AddButton onClick={onAddClick} disabled={disabled || readOnly} />
           </div>
         )}
