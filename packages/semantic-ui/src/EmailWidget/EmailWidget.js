@@ -1,26 +1,26 @@
-/* eslint-disable react/prop-types */
 import React from "react";
+import PropTypes from "prop-types";
 import { Form } from "semantic-ui-react";
 import { getSemanticProps } from "../util";
 import {  utils } from "@rjsf/core";
 
 const { getDisplayLabel } = utils;
-function PasswordWidget(props) {
+function EmailWidget(props) {
   const {
     id,
     required,
     readonly,
     disabled,
-    label,
     name,
+    label,
+    schema,
+    uiSchema,
     value,
     onChange,
     onBlur,
     onFocus,
     autofocus,
     options,
-    schema,
-    uiSchema,
     formContext,
   } = props;
   const semanticProps = getSemanticProps({
@@ -28,14 +28,14 @@ function PasswordWidget(props) {
     uiSchema,
     formContext,
     options,
-    defaultSchemaProps: {
+    defaultSchemaProps:{
       inverted: false,
       fluid: true,
     }
  });
   // eslint-disable-next-line no-shadow
   const _onChange = ({ target: { value } }) =>
-    onChange && onChange(value === "" ? options.emptyValue : value);
+    onChange(value === "" ? options.emptyValue : value);
   const _onBlur = () => onBlur && onBlur(id, value);
   const _onFocus = () => onFocus && onFocus(id, value);
   const displayLabel = getDisplayLabel(
@@ -45,16 +45,16 @@ function PasswordWidget(props) {
   );
   return (
     <Form.Input
-      id={id}
       key={id}
+      id={id}
+      type="email"
       label={displayLabel ? label || schema.title : false}
-      autoFocus={autofocus}
       required={required}
+      autoFocus={autofocus}
       disabled={disabled || readonly}
       name={name}
       {...semanticProps}
-      type="password"
-      value={value || ""}
+      value={value || value === 0 ? value : ""}
       onChange={_onChange}
       onBlur={_onBlur}
       onFocus={_onFocus}
@@ -62,4 +62,17 @@ function PasswordWidget(props) {
   );
 }
 
-export default PasswordWidget;
+EmailWidget.defaultProps = {
+  options: {
+    semantic: {
+      fluid: true,
+      inverted: false,
+    },
+  },
+};
+
+EmailWidget.propTypes = {
+  options: PropTypes.object,
+};
+
+export default EmailWidget;
