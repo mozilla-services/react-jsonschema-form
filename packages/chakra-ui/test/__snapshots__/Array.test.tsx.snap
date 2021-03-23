@@ -1,0 +1,417 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`array fields array 1`] = `
+<form
+  className="rjsf"
+  noValidate={false}
+  onSubmit={[Function]}
+>
+  <div
+    className="chakra-form-control css-1w4uldl"
+    role="group"
+  >
+    <div
+      className="css-o5g2qp"
+    >
+      <div
+        className="css-k04i86"
+      >
+        <h5
+          className="chakra-heading css-1dkn4ts"
+        />
+        <hr
+          aria-orientation="horizontal"
+          className="chakra-divider css-1upb9tn"
+          role="separator"
+        />
+      </div>
+      <div
+        className="css-zg1vud"
+      >
+        <div
+          className="css-1bvc4cc"
+        >
+          <div
+            className="css-g89h0y"
+          >
+            <button
+              className="chakra-button css-13v1igm"
+              onClick={[Function]}
+              type="button"
+            >
+              <span
+                className="chakra-button__icon css-ktvjz1"
+              >
+                <svg
+                  aria-hidden={true}
+                  fill="currentColor"
+                  focusable={false}
+                  height="1em"
+                  stroke="currentColor"
+                  strokeWidth="0"
+                  style={
+                    Object {
+                      "color": undefined,
+                    }
+                  }
+                  viewBox="0 0 24 24"
+                  width="1em"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"
+                  />
+                </svg>
+              </span>
+              Add More
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div>
+    <button
+      className="btn btn-info"
+      type="submit"
+    >
+      Submit
+    </button>
+  </div>
+</form>
+`;
+
+exports[`array fields checkboxes 1`] = `
+<form
+  className="rjsf"
+  noValidate={false}
+  onSubmit={[Function]}
+>
+  <div
+    className="chakra-form-control css-1w4uldl"
+    role="group"
+  >
+    <label
+      className="chakra-form__label css-1hbfay1"
+      htmlFor="root"
+      id="field-6-label"
+    />
+    <div
+      className="chakra-select__wrapper css-42b2qy"
+    >
+      <select
+        autoFocus={false}
+        className="chakra-select css-1p4gbel"
+        disabled={false}
+        id="root"
+        multiple={true}
+        onBlur={[Function]}
+        onChange={[Function]}
+        onFocus={[Function]}
+        readOnly={false}
+        required={false}
+        value={Array []}
+      >
+        <option
+          value="a"
+        >
+          a
+        </option>
+        <option
+          value="b"
+        >
+          b
+        </option>
+        <option
+          value="c"
+        >
+          c
+        </option>
+      </select>
+      <div
+        className="chakra-select__icon-wrapper css-162mkon"
+        data-disabled={false}
+      >
+        <svg
+          aria-hidden={true}
+          className="chakra-select__icon"
+          focusable={false}
+          role="presentation"
+          style={
+            Object {
+              "color": "currentColor",
+              "height": "1em",
+              "width": "1em",
+            }
+          }
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"
+            fill="currentColor"
+          />
+        </svg>
+      </div>
+    </div>
+  </div>
+  <div>
+    <button
+      className="btn btn-info"
+      type="submit"
+    >
+      Submit
+    </button>
+  </div>
+</form>
+`;
+
+exports[`array fields fixed array 1`] = `
+<form
+  className="rjsf"
+  noValidate={false}
+  onSubmit={[Function]}
+>
+  <div
+    className="chakra-form-control css-1w4uldl"
+    role="group"
+  >
+    <div
+      className="css-o5g2qp"
+    >
+      <div
+        className="css-k04i86"
+      >
+        <h5
+          className="chakra-heading css-1dkn4ts"
+        />
+        <hr
+          aria-orientation="horizontal"
+          className="chakra-divider css-1upb9tn"
+          role="separator"
+        />
+      </div>
+      <div
+        className="css-zg1vud"
+      >
+        <div
+          className="css-zigqtg"
+        >
+          <div
+            className="css-dfmuj5"
+          >
+            <div
+              className="chakra-form-control css-1w4uldl"
+              role="group"
+            >
+              <label
+                className="chakra-form__label css-1hbfay1"
+                htmlFor="root_0"
+                id="field-4-label"
+              >
+                <span
+                  aria-hidden={true}
+                  className="chakra-form__required-indicator css-0"
+                  role="presentation"
+                >
+                  *
+                </span>
+              </label>
+              <input
+                aria-required={true}
+                autoFocus={false}
+                className="chakra-input form-control css-0"
+                disabled={false}
+                formContext={Object {}}
+                id="field-4"
+                onBlur={[Function]}
+                onChange={[Function]}
+                onFocus={[Function]}
+                placeholder=""
+                readOnly={false}
+                registry={
+                  Object {
+                    "ArrayFieldTemplate": [Function],
+                    "FieldTemplate": [Function],
+                    "ObjectFieldTemplate": [Function],
+                    "definitions": Object {},
+                    "fields": Object {
+                      "AnyOfField": [Function],
+                      "ArrayField": [Function],
+                      "BooleanField": [Function],
+                      "DescriptionField": [Function],
+                      "NullField": [Function],
+                      "NumberField": [Function],
+                      "ObjectField": [Function],
+                      "OneOfField": [Function],
+                      "SchemaField": [Function],
+                      "StringField": [Function],
+                      "TitleField": [Function],
+                      "UnsupportedField": [Function],
+                    },
+                    "formContext": Object {},
+                    "rootSchema": Object {
+                      "items": Array [
+                        Object {
+                          "type": "string",
+                        },
+                        Object {
+                          "type": "number",
+                        },
+                      ],
+                      "type": "array",
+                    },
+                    "widgets": Object {
+                      "AltDateTimeWidget": [Function],
+                      "AltDateWidget": [Function],
+                      "BaseInput": [Function],
+                      "CheckboxWidget": [Function],
+                      "CheckboxesWidget": [Function],
+                      "ColorWidget": [Function],
+                      "DateTimeWidget": [Function],
+                      "DateWidget": [Function],
+                      "EmailWidget": [Function],
+                      "FileWidget": [Function],
+                      "HiddenWidget": [Function],
+                      "PasswordWidget": [Function],
+                      "RadioWidget": [Function],
+                      "RangeWidget": [Function],
+                      "SelectWidget": [Function],
+                      "TextWidget": [Function],
+                      "TextareaWidget": [Function],
+                      "URLWidget": [Function],
+                      "UpDownWidget": [Function],
+                      "radio": [Function],
+                      "select": [Function],
+                    },
+                  }
+                }
+                required={true}
+                type="text"
+                uiSchema={
+                  Object {
+                    "classNames": undefined,
+                  }
+                }
+                value=""
+              />
+            </div>
+          </div>
+        </div>
+        <div
+          className="css-zigqtg"
+        >
+          <div
+            className="css-dfmuj5"
+          >
+            <div
+              className="chakra-form-control css-1w4uldl"
+              role="group"
+            >
+              <label
+                className="chakra-form__label css-1hbfay1"
+                htmlFor="root_1"
+                id="field-5-label"
+              >
+                <span
+                  aria-hidden={true}
+                  className="chakra-form__required-indicator css-0"
+                  role="presentation"
+                >
+                  *
+                </span>
+              </label>
+              <input
+                aria-required={true}
+                autoFocus={false}
+                className="chakra-input form-control css-0"
+                disabled={false}
+                formContext={Object {}}
+                id="field-5"
+                onBlur={[Function]}
+                onChange={[Function]}
+                onFocus={[Function]}
+                placeholder=""
+                readOnly={false}
+                registry={
+                  Object {
+                    "ArrayFieldTemplate": [Function],
+                    "FieldTemplate": [Function],
+                    "ObjectFieldTemplate": [Function],
+                    "definitions": Object {},
+                    "fields": Object {
+                      "AnyOfField": [Function],
+                      "ArrayField": [Function],
+                      "BooleanField": [Function],
+                      "DescriptionField": [Function],
+                      "NullField": [Function],
+                      "NumberField": [Function],
+                      "ObjectField": [Function],
+                      "OneOfField": [Function],
+                      "SchemaField": [Function],
+                      "StringField": [Function],
+                      "TitleField": [Function],
+                      "UnsupportedField": [Function],
+                    },
+                    "formContext": Object {},
+                    "rootSchema": Object {
+                      "items": Array [
+                        Object {
+                          "type": "string",
+                        },
+                        Object {
+                          "type": "number",
+                        },
+                      ],
+                      "type": "array",
+                    },
+                    "widgets": Object {
+                      "AltDateTimeWidget": [Function],
+                      "AltDateWidget": [Function],
+                      "BaseInput": [Function],
+                      "CheckboxWidget": [Function],
+                      "CheckboxesWidget": [Function],
+                      "ColorWidget": [Function],
+                      "DateTimeWidget": [Function],
+                      "DateWidget": [Function],
+                      "EmailWidget": [Function],
+                      "FileWidget": [Function],
+                      "HiddenWidget": [Function],
+                      "PasswordWidget": [Function],
+                      "RadioWidget": [Function],
+                      "RangeWidget": [Function],
+                      "SelectWidget": [Function],
+                      "TextWidget": [Function],
+                      "TextareaWidget": [Function],
+                      "URLWidget": [Function],
+                      "UpDownWidget": [Function],
+                      "radio": [Function],
+                      "select": [Function],
+                    },
+                  }
+                }
+                required={true}
+                step="any"
+                type="number"
+                uiSchema={
+                  Object {
+                    "classNames": undefined,
+                  }
+                }
+                value=""
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div>
+    <button
+      className="btn btn-info"
+      type="submit"
+    >
+      Submit
+    </button>
+  </div>
+</form>
+`;
