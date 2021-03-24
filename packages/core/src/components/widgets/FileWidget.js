@@ -7,26 +7,44 @@ function addNameToDataURL(dataURL, name) {
   return dataURL.replace(";base64", `;name=${encodeURIComponent(name)};base64`);
 }
 
-function processFile(file) {
-  const { name, size, type } = file;
-  return new Promise((resolve, reject) => {
-    const reader = new window.FileReader();
-    reader.onerror = reject;
-    reader.onload = event => {
-      resolve({
-        dataURL: addNameToDataURL(event.target.result, name),
-        name,
-        size,
-        type,
+const processFiles = async (filesList, maxBytes) => {
+  const files = [];
+
+  for (var i = 0; i < filesList.length; i++) {
+    const file = filesList[i];
+    const isFileTooLarge = file.size > maxBytes;
+
+    // If a file is too large the browser will crash, so parse a small string instead
+    const dataURL = !isFileTooLarge
+      ? await processFile(file)
+      : `data:text/plain;base64,${btoa(
+          "File too large for parsing to base64"
+        )}`;
+
+    if (dataURL) {
+      files.push({
+        dataURL: addNameToDataURL(dataURL, file.name),
+        name: file.name,
+        size: !isFileTooLarge ? file.size : undefined,
+        type: !isFileTooLarge ? file.type : undefined,
       });
+    }
+  }
+
+  return files;
+};
+
+const processFile = file =>
+  new Promise((resolve, reject) => {
+    const reader = new window.FileReader();
+    reader.onerror = error => {
+      reject(error);
+    };
+    reader.onload = event => {
+      resolve(event.target.result);
     };
     reader.readAsDataURL(file);
   });
-}
-
-function processFiles(files) {
-  return Promise.all([].map.call(files, processFile));
-}
 
 function FilesInfo(props) {
   const { filesInfo } = props;
@@ -39,7 +57,12 @@ function FilesInfo(props) {
         const { name, size, type } = fileInfo;
         return (
           <li key={key}>
-            <strong>{name}</strong> ({type}, {size} bytes)
+            <strong>{name}</strong>{" "}
+            {type && size && (
+              <>
+                ({type}, {size} bytes)
+              </>
+            )}
           </li>
         );
       })}
@@ -59,7 +82,6 @@ function extractFileInfo(dataURLs) {
       };
     });
 }
-
 class FileWidget extends Component {
   constructor(props) {
     super(props);
@@ -72,21 +94,34 @@ class FileWidget extends Component {
     return shouldRender(this, nextProps, nextState);
   }
 
-  onChange = event => {
-    const { multiple, onChange } = this.props;
-    processFiles(event.target.files).then(filesInfo => {
-      const state = {
-        values: filesInfo.map(fileInfo => fileInfo.dataURL),
-        filesInfo,
-      };
-      this.setState(state, () => {
-        if (multiple) {
-          onChange(state.values);
-        } else {
-          onChange(state.values[0]);
-        }
+  onChange = async event => {
+    const filesList = event.target.files;
+    const { multiple, onChange, options } = this.props;
+    const maxBytes = options && options.maxBytes ? options.maxBytes : Infinity;
+
+    if (!filesList) {
+      onChange(undefined);
+      this.setState({
+        values: [undefined],
+        filesInfo: [],
       });
-    });
+    }
+
+    const files = await processFiles(filesList, maxBytes);
+
+    this.setState(
+      {
+        values: files.map(fileInfo => fileInfo.dataURL),
+        filesInfo: files,
+      },
+      () => {
+        if (multiple) {
+          onChange(this.state.values);
+        } else {
+          onChange(this.state.values[0]);
+        }
+      }
+    );
   };
 
   render() {
