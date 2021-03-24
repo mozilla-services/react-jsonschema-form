@@ -61,6 +61,7 @@ declare module '@rjsf/core' {
         onChange: (formData: T, newErrorSchema: ErrorSchema) => void;
         onBlur: (id: string, value: boolean | number | string | null) => void;
         submit: () => void;
+        formElement: HTMLFormElement | null;
     }
 
     export type UiSchema = {
@@ -274,7 +275,7 @@ declare module '@rjsf/core' {
 
     export function withTheme<T = any>(
         themeProps: ThemeProps<T>,
-    ): React.ComponentClass<FormProps<T>> | React.StatelessComponent<FormProps<T>>;
+    ): typeof Form;
 
     export type AddButtonProps = {
         className: string;
@@ -436,8 +437,7 @@ declare module '@rjsf/core' {
 }
 
 declare module '@rjsf/core/lib/components/fields/SchemaField' {
-    import { JSONSchema7 } from 'json-schema';
-    import { FieldProps, UiSchema, IdSchema, FormValidation } from '@rjsf/core';
+    import { FieldProps } from '@rjsf/core';
 
     export type SchemaFieldProps<T = any> = Pick<
         FieldProps<T>,

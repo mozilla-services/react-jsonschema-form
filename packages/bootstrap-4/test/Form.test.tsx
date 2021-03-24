@@ -1,8 +1,8 @@
-import React from "react";
-import Form from "../src/index";
+import CoreForm, { UiSchema } from "@rjsf/core";
 import { JSONSchema7 } from "json-schema";
+import React from "react";
 import renderer from "react-test-renderer";
-import { UiSchema } from "@rjsf/core";
+import Form from "../src/index";
 
 describe("single fields", () => {
   describe("string field", () => {
@@ -196,5 +196,37 @@ describe("single fields", () => {
       .create(<Form schema={schema} uiSchema={uiSchema} />)
       .toJSON();
     expect(tree).toMatchSnapshot();
+  });
+});
+
+describe("refs", () => {
+  test("Renders with a ref and the Form Element accepts a generic formData argument", () => {  
+    let ref = React.createRef<CoreForm<{
+      field: string;
+    }>>()
+ 
+    renderer.create(
+      <Form<{
+        field: string;
+      }>
+        ref={ref}
+        formData={{
+          field: "",
+        }}
+        schema={{
+          type: "object",
+          properties: {
+            field: {
+              type: "string",
+            },
+          },
+        }}
+      />
+    );
+    
+    expect(ref.current).toBeDefined();
+    expect(ref.current!.submit).toBeDefined();
+    expect(ref.current!.formElement).toBeDefined();
+    expect(ref.current!.validate).toBeDefined();
   });
 });
