@@ -2195,7 +2195,7 @@ describeRepeated("Form common", createFormComponent => {
       autoComplete: "off",
       enctype: "multipart/form-data",
       acceptcharset: "ISO-8859-1",
-      noHtml5Validate: true,
+      html5Validate: false,
     };
 
     let node;
@@ -2242,6 +2242,26 @@ describeRepeated("Form common", createFormComponent => {
 
     it("should set attr novalidate of form", () => {
       expect(node.getAttribute("novalidate")).not.to.be.null;
+    });
+  });
+
+  describe("html5Validate", () => {
+    it("should remove noValidate when html5Validate is true", () => {
+      const formProps = {
+        schema: {},
+        id: "test-form",
+        className: "test-class other-class",
+        name: "testName",
+        method: "post",
+        target: "_blank",
+        action: "/users/list",
+        autoComplete: "off",
+        enctype: "multipart/form-data",
+        acceptcharset: "ISO-8859-1",
+        html5Validate: true,
+      };
+      const node = createFormComponent(formProps).node;
+      expect(node.getAttribute("novalidate")).to.be.null;
     });
   });
 
