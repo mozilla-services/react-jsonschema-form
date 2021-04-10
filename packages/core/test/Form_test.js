@@ -2245,40 +2245,6 @@ describeRepeated("Form common", createFormComponent => {
     });
   });
 
-  describe("Deprecated autocomplete attribute", () => {
-    it("should set attr autocomplete of form", () => {
-      const formProps = {
-        schema: {},
-        autocomplete: "off",
-      };
-      const node = createFormComponent(formProps).node;
-      expect(node.getAttribute("autocomplete")).eql(formProps.autocomplete);
-    });
-
-    it("should log deprecation warning when it is used", () => {
-      sandbox.stub(console, "warn");
-      createFormComponent({
-        schema: {},
-        autocomplete: "off",
-      });
-      expect(
-        console.warn.calledWithMatch(
-          /Using autocomplete property of Form is deprecated/
-        )
-      ).to.be.true;
-    });
-
-    it("should use autoComplete value if both autocomplete and autoComplete are used", () => {
-      const formProps = {
-        schema: {},
-        autocomplete: "off",
-        autoComplete: "on",
-      };
-      const node = createFormComponent(formProps).node;
-      expect(node.getAttribute("autocomplete")).eql(formProps.autoComplete);
-    });
-  });
-
   describe("Custom format updates", () => {
     it("Should update custom formats when customFormats is changed", () => {
       const formProps = {
