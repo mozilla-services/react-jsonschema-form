@@ -357,6 +357,8 @@ declare module '@rjsf/core' {
             value: string;
         }[];
 
+        export function processNewValue({ schema: JSONSchema7, uiSchema: UiSchema, newValue: string }): undefined | boolean | string | number | array;
+
         export function guessType(value: any): JSONSchema7TypeName;
 
         export function stubExistingAdditionalProperties<T = any>(

@@ -18,6 +18,7 @@ import {
   mergeObjects,
   pad,
   parseDateString,
+  processNewValue,
   retrieveSchema,
   shouldRender,
   toDateString,
@@ -3360,6 +3361,39 @@ describe("utils", () => {
         minute: 0,
         second: 0,
       });
+    });
+  });
+
+  describe("processNewValue()", () => {
+    it("should return undefined if choice is blank", () => {
+      expect(processNewValue({ schema: {}, uiSchema: {}, newValue: "" })).eql(
+        undefined
+      );
+      expect(
+        processNewValue({
+          schema: { enum: ["@*", ""] },
+          uiSchema: {},
+          newValue: "",
+        })
+      ).eql(undefined);
+    });
+
+    it("should return the enforced `ui:emptyValue` if an empty string is provided", () => {
+      expect(
+        processNewValue({
+          schema: {},
+          uiSchema: { "ui:emptyValue": "alt" },
+          newValue: "",
+        })
+      ).eql("alt");
+
+      expect(
+        processNewValue({
+          schema: { enum: ["@*", ""] },
+          uiSchema: { "ui:emptyValue": "alt" },
+          newValue: "",
+        })
+      ).eql("alt");
     });
   });
 
