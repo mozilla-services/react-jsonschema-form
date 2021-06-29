@@ -518,6 +518,7 @@ exports[`single fields format color 1`] = `
         onClick={[Function]}
       >
         <input
+          aria-describedby="root__errors root__description root__help"
           aria-invalid={false}
           autoFocus={false}
           className="MuiInputBase-input MuiInput-input"
@@ -633,6 +634,7 @@ exports[`single fields format date 1`] = `
         onClick={[Function]}
       >
         <input
+          aria-describedby="root__errors root__description root__help"
           aria-invalid={false}
           autoFocus={false}
           className="MuiInputBase-input MuiInput-input"
@@ -745,6 +747,7 @@ exports[`single fields format datetime 1`] = `
         onClick={[Function]}
       >
         <input
+          aria-describedby="root__errors root__description root__help"
           aria-invalid={false}
           autoFocus={false}
           className="MuiInputBase-input MuiInput-input"
@@ -911,6 +914,7 @@ exports[`single fields hidden label 1`] = `
         onClick={[Function]}
       >
         <input
+          aria-describedby="root__errors root__description root__help"
           aria-invalid={false}
           autoFocus={false}
           className="MuiInputBase-input MuiInput-input"
@@ -1064,6 +1068,7 @@ exports[`single fields number field 0 1`] = `
         onClick={[Function]}
       >
         <input
+          aria-describedby="root__errors root__description root__help"
           aria-invalid={false}
           autoFocus={false}
           className="MuiInputBase-input MuiInput-input"
@@ -1175,6 +1180,7 @@ exports[`single fields number field 1`] = `
         onClick={[Function]}
       >
         <input
+          aria-describedby="root__errors root__description root__help"
           aria-invalid={false}
           autoFocus={false}
           className="MuiInputBase-input MuiInput-input"
@@ -1242,6 +1248,7 @@ exports[`single fields password field 1`] = `
         onClick={[Function]}
       >
         <input
+          aria-describedby="root__errors root__description root__help"
           aria-invalid={false}
           autoFocus={false}
           className="MuiInputBase-input MuiInput-input"
@@ -1504,6 +1511,7 @@ exports[`single fields select field 1`] = `
           />
         </div>
         <input
+          aria-describedby="root__errors root__description root__help"
           autoFocus={false}
           onAnimationStart={[Function]}
           type="hidden"
@@ -1673,6 +1681,7 @@ exports[`single fields string field format email 1`] = `
         onClick={[Function]}
       >
         <input
+          aria-describedby="root__errors root__description root__help"
           aria-invalid={false}
           autoFocus={false}
           className="MuiInputBase-input MuiInput-input"
@@ -1788,6 +1797,7 @@ exports[`single fields string field format uri 1`] = `
         onClick={[Function]}
       >
         <input
+          aria-describedby="root__errors root__description root__help"
           aria-invalid={false}
           autoFocus={false}
           className="MuiInputBase-input MuiInput-input"
@@ -1899,6 +1909,7 @@ exports[`single fields string field regular 1`] = `
         onClick={[Function]}
       >
         <input
+          aria-describedby="root__errors root__description root__help"
           aria-invalid={false}
           autoFocus={false}
           className="MuiInputBase-input MuiInput-input"
@@ -2010,6 +2021,7 @@ exports[`single fields string field with placeholder 1`] = `
         onClick={[Function]}
       >
         <input
+          aria-describedby="root__errors root__description root__help"
           aria-invalid={false}
           autoFocus={false}
           className="MuiInputBase-input MuiInput-input"
@@ -2074,6 +2086,7 @@ exports[`single fields textarea field 1`] = `
         onClick={[Function]}
       >
         <textarea
+          aria-describedby="root__errors root__description root__help"
           aria-invalid={false}
           autoFocus={false}
           className="MuiInputBase-input MuiInput-input MuiInputBase-inputMultiline MuiInput-inputMultiline"

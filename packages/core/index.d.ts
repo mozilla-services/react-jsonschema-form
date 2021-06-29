@@ -434,6 +434,14 @@ declare module '@rjsf/core' {
         ): number;
 
         export function schemaRequiresTrueValue(schema: JSONSchema7): boolean;
+
+        export function descriptionId(id: string): string;
+
+        export function helpId(id: string): string;
+
+        export function errorsId(id: string): string;
+
+        export function ariaDescribedBy(id: string): string;
     }
 }
 
