@@ -337,6 +337,11 @@ export default class Form extends Component {
       const schemaValidationErrors = errors;
       const schemaValidationErrorSchema = errorSchema;
       if (Object.keys(errors).length > 0) {
+        const firstErrorElement = this.getFirstErrorField(
+          schemaValidation.errors[0]
+        );
+        firstErrorElement && firstErrorElement.focus(); // Focus on first error field
+
         if (this.props.extraErrors) {
           errorSchema = mergeObjects(
             errorSchema,
@@ -385,6 +390,19 @@ export default class Form extends Component {
         }
       }
     );
+  };
+
+  getFirstErrorField = error => {
+    const firstErrorField = error?.property?.replace(".", "");
+    let { idPrefix } = this.props;
+    if (idPrefix === undefined) {
+      idPrefix = "root";
+    }
+
+    const firstErrorElement = this.formElement.elements[
+      `${idPrefix}_${firstErrorField}`
+    ];
+    return firstErrorElement;
   };
 
   getRegistry() {
