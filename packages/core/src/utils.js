@@ -3,6 +3,7 @@ import * as ReactIs from "react-is";
 import mergeAllOf from "json-schema-merge-allof";
 import fill from "core-js-pure/features/array/fill";
 import union from "lodash/union";
+import isEmpty from "lodash/isEmpty";
 import jsonpointer from "jsonpointer";
 import fields from "./components/fields";
 import widgets from "./components/widgets";
@@ -220,10 +221,22 @@ function computeDefaults(
     );
   } else if ("oneOf" in schema) {
     schema =
-      schema.oneOf[getMatchingOption(undefined, schema.oneOf, rootSchema)];
+      schema.oneOf[
+        getMatchingOption(
+          isEmpty(formData) ? undefined : formData,
+          schema.oneOf,
+          rootSchema
+        )
+      ];
   } else if ("anyOf" in schema) {
     schema =
-      schema.anyOf[getMatchingOption(undefined, schema.anyOf, rootSchema)];
+      schema.anyOf[
+        getMatchingOption(
+          isEmpty(formData) ? undefined : formData,
+          schema.anyOf,
+          rootSchema
+        )
+      ];
   }
 
   // Not defaults defined for this node, fallback to generic typed ones.
