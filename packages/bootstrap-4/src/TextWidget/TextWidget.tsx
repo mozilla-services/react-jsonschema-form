@@ -37,13 +37,18 @@ const TextWidget = ({
   }: React.FocusEvent<HTMLInputElement>) => onFocus(id, value);
   const inputType = (type || schema.type) === 'string' ?  'text' : `${type || schema.type}`
   
-  // const classNames = [rawErrors.length > 0 ? "is-invalid" : "", type === 'file' ? 'custom-file-label': ""]
-  return (
-    <Form.Group className="mb-0">
+  const WidgetLabel = () => {
+    if('label' in options && !options.label) return null
+    return (
       <Form.Label className={rawErrors.length > 0 ? "text-danger" : ""}>
         {label || schema.title}
         {(label || schema.title) && required ? "*" : null}
       </Form.Label>
+    )
+  }
+  return (
+    <Form.Group className="mb-0">
+      <WidgetLabel />
       <Form.Control
         id={id}
         placeholder={placeholder}
