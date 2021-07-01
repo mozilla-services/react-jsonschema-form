@@ -342,6 +342,7 @@ function SchemaFieldRender(props) {
     formContext,
     formData,
     fields,
+    name,
     schema,
     uiSchema,
     registry,
