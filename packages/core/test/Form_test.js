@@ -327,6 +327,7 @@ describeRepeated("Form common", createFormComponent => {
         formData,
         FieldTemplate,
         liveValidate: true,
+        omitDefaultLoad: true,
       }).node;
     });
 
@@ -3258,5 +3259,433 @@ describe("Form omitExtraData and liveOmit", () => {
     });
 
     expect(node.querySelectorAll(".error-detail li")).to.have.length.of(2);
+  });
+});
+
+describe("Form omitDefaultLoad", () => {
+  let sandbox;
+
+  beforeEach(() => {
+    sandbox = createSandbox();
+  });
+
+  afterEach(() => {
+    sandbox.restore();
+  });
+
+  it("should not populate default for root property on load", () => {
+    const schema = {
+      type: "object",
+      properties: {
+        foo: {
+          type: "string",
+          default: "lorem ipsum",
+        },
+      },
+    };
+    const formData = {};
+    const omitDefaultLoad = true;
+    const onChangeProp = sinon.spy();
+
+    createFormComponent({
+      schema,
+      onChange: onChangeProp,
+      formData,
+      omitDefaultLoad,
+    });
+
+    sinon.assert.calledWithMatch(onChangeProp, {
+      formData: {
+        foo: undefined,
+      },
+    });
+  });
+
+  it("should not populate default for array item property on load", () => {
+    const schema = {
+      type: "object",
+      title: "lvl 1 obj",
+      properties: {
+        object: {
+          type: "object",
+          title: "lvl 2 obj",
+          properties: {
+            array: {
+              type: "array",
+              items: {
+                type: "object",
+                title: "lvl 3 obj",
+                properties: {
+                  bool: {
+                    type: "boolean",
+                    default: true,
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    };
+
+    const formData = {
+      object: {
+        array: [{}],
+      },
+    };
+
+    const omitDefaultLoad = true;
+    const onChangeProp = sinon.spy();
+
+    createFormComponent({
+      schema,
+      onChange: onChangeProp,
+      formData,
+      omitDefaultLoad,
+    });
+
+    sinon.assert.calledWithMatch(onChangeProp, {
+      formData: {
+        object: {
+          array: [{ bool: undefined }],
+        },
+      },
+    });
+  });
+
+  it("should populate newly inserted array item defaults", () => {
+    const schema = {
+      type: "object",
+      title: "lvl 1 obj",
+      properties: {
+        object: {
+          type: "object",
+          title: "lvl 2 obj",
+          properties: {
+            array: {
+              type: "array",
+              items: {
+                type: "object",
+                title: "lvl 3 obj",
+                properties: {
+                  bool: {
+                    type: "boolean",
+                    default: true,
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    };
+    const formData = {
+      object: {
+        array: [{}],
+      },
+    };
+    const omitDefaultLoad = true;
+
+    const { node, onSubmit } = createFormComponent({
+      schema,
+      formData,
+      omitDefaultLoad,
+    });
+
+    Simulate.click(node.querySelector(".array-item-add button"));
+    Simulate.submit(node);
+
+    sinon.assert.calledWithMatch(onSubmit.lastCall, {
+      formData: {
+        object: {
+          array: [
+            {
+              bool: undefined,
+            },
+            {
+              bool: true,
+            },
+          ],
+        },
+      },
+    });
+  });
+
+  it("should populate dependency defaults for uncontrolled components", () => {
+    const schema = {
+      type: "object",
+      properties: {
+        foo: { type: "string", default: "lorem ipsum" },
+        firstName: { type: "string" },
+      },
+      dependencies: {
+        firstName: {
+          properties: {
+            lastName: { type: "string", default: "Norris" },
+          },
+        },
+      },
+    };
+    const formData = {};
+    const omitDefaultLoad = true;
+    const onChangeProp = sinon.spy();
+    const { node } = createFormComponent({
+      schema,
+      formData,
+      omitDefaultLoad,
+      onChange: onChangeProp,
+    });
+
+    Simulate.change(node.querySelector("#root_firstName"), {
+      target: { value: "Chuck" },
+    });
+    expect(node.querySelector("#root_lastName").value).eql("Norris");
+
+    sinon.assert.calledWithMatch(onChangeProp.lastCall, {
+      formData: {
+        foo: undefined,
+        firstName: "Chuck",
+        lastName: "Norris",
+      },
+    });
+  });
+
+  it("should not populate default for selected anyOf option on load", () => {
+    const schema = {
+      type: "object",
+      anyOf: [
+        {
+          properties: {
+            foo: {
+              type: "string",
+            },
+          },
+          default: {
+            foo: "bar",
+          },
+        },
+        {
+          properties: {
+            foo: {
+              type: "string",
+            },
+          },
+          default: {
+            foo: "baz",
+          },
+        },
+      ],
+    };
+    const formData = {};
+    const omitDefaultLoad = true;
+    const onChangeProp = sinon.spy();
+    createFormComponent({
+      schema,
+      formData,
+      omitDefaultLoad,
+      onChange: onChangeProp,
+    });
+
+    sinon.assert.calledWithMatch(onChangeProp, {
+      formData: {
+        foo: undefined,
+      },
+    });
+  });
+
+  it("should populate default when changing anyOf selection to option with default", () => {
+    const schema = {
+      type: "object",
+      anyOf: [
+        {
+          properties: {
+            foo: {
+              type: "string",
+            },
+          },
+          default: {
+            foo: "bar",
+          },
+        },
+        {
+          properties: {
+            foo: {
+              type: "string",
+            },
+          },
+          default: {
+            foo: "baz",
+          },
+        },
+      ],
+    };
+    const formData = {};
+    const omitDefaultLoad = true;
+    const onChangeProp = sinon.spy();
+    const { node } = createFormComponent({
+      schema,
+      formData,
+      omitDefaultLoad,
+      onChange: onChangeProp,
+    });
+
+    const $select = node.querySelector("select");
+
+    Simulate.change($select, {
+      target: { value: $select.options[1].value },
+    });
+
+    sinon.assert.calledWithMatch(onChangeProp.lastCall, {
+      formData: {
+        foo: "baz",
+      },
+    });
+  });
+
+  it("should populate initial default when changing value back and both options have defaults", () => {
+    const schema = {
+      type: "object",
+      anyOf: [
+        {
+          properties: {
+            foo: {
+              type: "string",
+            },
+          },
+          default: {
+            foo: "bar",
+          },
+        },
+        {
+          properties: {
+            foo: {
+              type: "string",
+            },
+          },
+          default: {
+            foo: "baz",
+          },
+        },
+      ],
+    };
+    const formData = {};
+    const omitDefaultLoad = true;
+    const onChangeProp = sinon.spy();
+    const { node } = createFormComponent({
+      schema,
+      formData,
+      omitDefaultLoad,
+      onChange: onChangeProp,
+    });
+
+    const $select = node.querySelector("select");
+
+    Simulate.change($select, {
+      target: { value: $select.options[1].value },
+    });
+    Simulate.change($select, {
+      target: { value: $select.options[0].value },
+    });
+
+    sinon.assert.calledWithMatch(onChangeProp.lastCall, {
+      formData: {
+        foo: "bar",
+      },
+    });
+  });
+
+  it("should remain empty when changing anyOf selection to option with no default", () => {
+    const schema = {
+      type: "object",
+      anyOf: [
+        {
+          properties: {
+            foo: {
+              type: "string",
+            },
+          },
+          default: {
+            foo: "bar",
+          },
+        },
+        {
+          properties: {
+            foo: {
+              type: "string",
+            },
+          },
+        },
+      ],
+    };
+    const formData = {};
+    const omitDefaultLoad = true;
+    const onChangeProp = sinon.spy();
+    const { node } = createFormComponent({
+      schema,
+      formData,
+      omitDefaultLoad,
+      onChange: onChangeProp,
+    });
+
+    const $select = node.querySelector("select");
+
+    Simulate.change($select, {
+      target: { value: $select.options[1].value },
+    });
+
+    sinon.assert.calledWithMatch(onChangeProp.lastCall, {
+      formData: {
+        foo: undefined,
+      },
+    });
+  });
+
+  it("should populate initial default when changing value back and only initial has default", () => {
+    const schema = {
+      type: "object",
+      anyOf: [
+        {
+          properties: {
+            foo: {
+              type: "string",
+            },
+          },
+          default: {
+            foo: "bar",
+          },
+        },
+        {
+          properties: {
+            foo: {
+              type: "string",
+            },
+          },
+        },
+      ],
+    };
+    const formData = {};
+    const omitDefaultLoad = true;
+    const onChangeProp = sinon.spy();
+    const { node } = createFormComponent({
+      schema,
+      formData,
+      omitDefaultLoad,
+      onChange: onChangeProp,
+    });
+
+    const $select = node.querySelector("select");
+
+    Simulate.change($select, {
+      target: { value: $select.options[1].value },
+    });
+    Simulate.change($select, {
+      target: { value: $select.options[0].value },
+    });
+
+    sinon.assert.calledWithMatch(onChangeProp.lastCall, {
+      formData: {
+        foo: "bar",
+      },
+    });
   });
 });

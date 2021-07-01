@@ -71,6 +71,55 @@ render((
 ), document.getElementById("app"));
 ```
 
+This will generate a form like this (assuming you loaded the standard [Bootstrap](http://getbootstrap.com/) stylesheet):
+
+![](https://i.imgur.com/DZQYPyu.png)
+
+### Form initialization
+
+Often you'll want to prefill a form with existing data; this is done by passing a `formData` prop object matching the schema:
+
+```jsx
+const formData = {
+  title: "First task",
+  done: true
+};
+
+render((
+  <Form schema={schema}
+        formData={formData} />
+), document.getElementById("app"));
+```
+
+> Note: If your form has a single field, pass a single value to `formData`. e.g. `formData='Charlie'`
+
+> Note: To treat each field with a default as if it has been cleared, set `omitDefaultLoad` to `true`. Defaults will still be honored when new fields are shown as a result of user interaction (e.g. adding a new array row).
+
+> WARNING: If you have situations where your parent component can re-render, make sure you listen to the `onChange` event and update the data you pass to the `formData` attribute.
+
+### Form event handlers
+
+#### Form submission
+
+You can pass a function as the `onSubmit` prop of your `Form` component to listen to when the form is submitted and its data are valid. It will be passed a result object having a `formData` attribute, which is the valid form data you're usually after. The original event will also be passed as a second parameter:
+
+```js
+const onSubmit = ({formData}, e) => console.log("Data submitted: ",  formData);
+
+render((
+  <Form schema={schema}
+        onSubmit={onSubmit} />
+), document.getElementById("app"));
+```
+
+> Note: If there are fields in the `formData` that are not represented in the schema, they will be retained by default. If you would like to remove those extra values on form submission, then set the `omitExtraData` prop to `true`. Set the `liveOmit` prop to true in order to remove extra data upon form data change.
+
+#### Form error event handler
+
+To react when submitted form data are invalid, pass an `onError` handler. It will be passed the list of encountered errors:
+
+```js
+const onError = (errors) => console.log("I have", errors.length, "errors to fix");
 
 ## Theming
 

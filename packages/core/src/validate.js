@@ -175,7 +175,9 @@ export default function validateFormData(
 ) {
   // Include form data with undefined values, which is required for validation.
   const rootSchema = schema;
-  formData = getDefaultFormState(schema, formData, rootSchema, true);
+  formData = getDefaultFormState(schema, formData, rootSchema, {
+    includeUndefinedValues: true,
+  });
 
   const newMetaSchemas = !deepEquals(formerMetaSchema, additionalMetaSchemas);
   const newFormats = !deepEquals(formerCustomFormats, customFormats);
