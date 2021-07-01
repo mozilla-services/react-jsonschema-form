@@ -142,7 +142,7 @@ class AltDateWidget extends Component {
     return (
       <ul className="list-inline">
         {this.dateElementProps.map((elemProps, i) => (
-          <li key={i}>
+          <li class="list-inline-item" key={i}>
             <DateElement
               rootId={id}
               select={this.onChange}
@@ -158,7 +158,7 @@ class AltDateWidget extends Component {
         {(options.hideNowButton !== "undefined"
           ? !options.hideNowButton
           : true) && (
-          <li>
+          <li class="list-inline-item">
             <a href="#" className="btn btn-info btn-now" onClick={this.setNow}>
               Now
             </a>
@@ -167,7 +167,7 @@ class AltDateWidget extends Component {
         {(options.hideClearButton !== "undefined"
           ? !options.hideClearButton
           : true) && (
-          <li>
+          <li class="list-inline-item">
             <a
               href="#"
               className="btn btn-warning btn-clear"
