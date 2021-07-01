@@ -431,7 +431,7 @@ declare module '@rjsf/core' {
             formData: any,
             options: JSONSchema7[],
             definitions: FieldProps['registry']['definitions'],
-        ): number;
+        ): number | undefined;
 
         export function schemaRequiresTrueValue(schema: JSONSchema7): boolean;
     }
